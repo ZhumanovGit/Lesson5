@@ -13,12 +13,15 @@ import androidx.core.content.FileProvider;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,14 +38,25 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
+    ImageView imageViewCamera;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        imageViewCamera = findViewById(R.id.imageView);
+
+        Bitmap bitmap = Bitmap.createBitmap(100, 100,
+                Bitmap.Config.ARGB_8888);
+        imageViewCamera.setImageBitmap(bitmap);
+
+        bitmap.eraseColor(Color.BLUE);
+        bitmap.setPixel(50, 50, Color.RED);
+
+        //binding = ActivityMainBinding.inflate(getLayoutInflater());
+        //setContentView(binding.getRoot());
 
         int cameraPermissionStatus = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA);
         int storagePermissionStatus = ContextCompat.checkSelfPermission(this, android.Manifest.permission.
@@ -61,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    binding.imageView.setImageURI(imageUri);
+                    imageViewCamera.setImageURI(imageUri);
                 }
             }
         };
@@ -69,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 callback);
 
-        binding.imageView.setOnClickListener(new View.OnClickListener() {
+        imageViewCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
