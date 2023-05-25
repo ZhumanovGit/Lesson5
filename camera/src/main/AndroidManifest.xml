@@ -28,7 +28,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="ru.mirea.efimovar.camera.fileprovider"
+            android:authorities="ru.mirea.zhumanov.camera.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
